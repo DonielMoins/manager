@@ -18,6 +18,7 @@ export type DashboardTileDefinition = {
   actions?:
     | DashboardTileDefinitionAction[]
     | ((data: unknown) => DashboardTileDefinitionAction[]);
+  hidden?: boolean | ((data: unknown) => boolean);
 };
 
 export type DashboardTileDefinitionAction = {
@@ -28,6 +29,7 @@ export type DashboardTileDefinitionAction = {
   onClick?: () => void;
   href?: string;
   isExternal?: boolean;
+  trackAction?: string;
 };
 
 export enum TileTypesEnum {

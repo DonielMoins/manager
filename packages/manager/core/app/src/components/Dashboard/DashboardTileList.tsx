@@ -10,6 +10,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { EllipsisIcon, TileSection } from '@ovh-ux/manager-themes';
 
+import { useShell, OvhContextShellType } from '@/core';
+
 import { DashboardTileDefinition, DashboardTileDefinitionAction } from '.';
 
 export type DashboardTileListProps = {
@@ -21,7 +23,9 @@ export default function DashboardTileList({
   definitions,
   data,
 }: DashboardTileListProps): JSX.Element {
-  const getActionList = (actions: DashboardTileDefinitionAction[]) => {
+  const shell = useShell();
+
+  const getActionList = (actions: DashboardTileDefinitionAction[], shell: OvhContextShellType) => {
     if (!actions?.length) {
       return '';
     }
@@ -29,7 +33,12 @@ export default function DashboardTileList({
     const getMenuItem = (action: DashboardTileDefinitionAction) => {
       if (Object.prototype.hasOwnProperty.call(action, 'to')) {
         return (
-          <MenuItem as={RouterLink} to={action.to} aria-label={action.title}>
+          <MenuItem
+            key={action.label}
+            as={RouterLink}
+            to={action.to}
+            aria-label={action.title || action.label}
+          >
             {action.label}
           </MenuItem>
         );
@@ -38,11 +47,23 @@ export default function DashboardTileList({
       if (Object.prototype.hasOwnProperty.call(action, 'href')) {
         return (
           <MenuItem
+            key={action.label}
             as={Link}
             href={action.href}
             isExternal={action.isExternal}
-            aria-label={action.title}
-            onClick={action.onClick}
+            aria-label={action.title || action.label}
+            onClick={action.onClick || action.trackAction ? () => {
+              if (action.onClick) {
+                action.onClick();
+              }
+              if (action.trackAction) {
+                shell.tracking.trackClick({
+                  type: 'action',
+                  name: action.trackAction,
+                  customVars: undefined,
+                })
+              }
+            } : undefined }
           >
             {action.label}
           </MenuItem>
@@ -51,13 +72,15 @@ export default function DashboardTileList({
 
       return (
         <MenuItem
-          aria-label={action.title}
+          key={action.label}
+          aria-label={action.title || action.label}
           onClick={action?.onClick.bind(null, data)}
         >
           {action.label}
         </MenuItem>
       );
     };
+
     return (
       <Menu>
         <MenuButton
@@ -77,8 +100,12 @@ export default function DashboardTileList({
 
   return (
     <>
-      {definitions.map((definition: DashboardTileDefinition) => {
+      {definitions?.map((definition: DashboardTileDefinition) => {
         return (
+          typeof definition.hidden === 'function'
+          ? definition.hidden(data)
+          : definition?.hidden || ''
+        ) ? null : (
           <TileSection
             key={definition.name}
             title={definition.title}
@@ -91,7 +118,8 @@ export default function DashboardTileList({
               typeof definition.actions === 'function'
                 ? definition.actions(data)
                 : definition.actions || [],
-            )}
+              shell)
+            }
           ></TileSection>
         );
       })}
