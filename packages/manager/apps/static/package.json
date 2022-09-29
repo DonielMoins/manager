@@ -1,0 +1,19 @@
+{
+  "name": "@ovh-ux/static-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node ./scripts/build.js",
+    "dev": "node ./scripts/build.js && serve dist -l 9002",
+    "dev:watch": "node ./scripts/build.js && serve dist -l 9002",
+    "package:add": "node ./scripts/package-add.js",
+    "start": "lerna exec --stream --scope='@ovh-ux/static-app' --include-dependencies -- npm run build --if-present",
+    "start:dev": "lerna exec --stream --scope='@ovh-ux/static-app' --include-dependencies -- npm run dev --if-present",
+    "start:watch": "lerna exec --stream --parallel --scope='@ovh-ux/static-app' --include-dependencies -- npm run dev:watch --if-present"
+  },
+  "devDependencies": {
+    "axios": "^0.27.2",
+    "serve": "^14.0.1",
+    "tar": "^6.1.11"
+  }
+}
