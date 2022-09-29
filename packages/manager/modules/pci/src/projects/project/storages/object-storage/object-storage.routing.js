@@ -10,9 +10,9 @@ export default /* @ngInject */ ($stateProvider) => {
     redirectTo: (transition) =>
       transition
         .injector()
-        .getAsync('containers')
-        .then((containers) =>
-          containers.length === 0
+        .getAsync('containersResponseObj')
+        .then(({ resources, errors }) =>
+          resources.length === 0 && errors.length === 0
             ? {
                 state:
                   'pci.projects.project.storages.object-storage.onboarding',
@@ -24,12 +24,20 @@ export default /* @ngInject */ ($stateProvider) => {
 
       trackingPrefix: () =>
         'PublicCloud::pci::projects::project::storages::objects::',
-
-      containers: /* @ngInject */ (
+      containersResponseObj: /* @ngInject */ (
         PciProjectStorageContainersService,
         archive,
         projectId,
-      ) => PciProjectStorageContainersService.getAll(projectId, archive),
+      ) =>
+        PciProjectStorageContainersService.getAll(
+          projectId,
+          archive,
+          false,
+          true,
+        ),
+
+      containers: /* @ngInject */ (containersResponseObj) =>
+        containersResponseObj.resources,
 
       containersRegions: /* @ngInject */ (containers) =>
         Array.from(new Set(containers.map(({ region }) => region))),
