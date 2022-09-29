@@ -44,6 +44,14 @@ function viteOvhDevServerPlugin() {
         );
       }
 
+      app.use(
+        '/static',
+        createProxyMiddleware({
+          target: 'http://localhost:9002/',
+          pathRewrite: (urlPath) => urlPath.replace('/static', ''),
+        }),
+      );
+
       app.get('/auth', sso.auth.bind(sso));
       app.get('/auth/check', sso.checkAuth.bind(sso));
 

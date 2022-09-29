@@ -89,6 +89,7 @@ inquirer
         await concurrently(
           [
             `yarn workspace ${containerPackageName} run start:dev`,
+            `yarn workspace @ovh-ux/static-app run start:dev`,
             `CONTAINER=1 yarn workspace ${packageName} run start:dev`,
           ],
           {
