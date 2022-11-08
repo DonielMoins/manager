@@ -7,7 +7,6 @@ const get = require('lodash/get');
 const set = require('lodash/set');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpackRetryChunckLoadPlugin = require('webpack-retry-chunk-load-plugin');
 
 const RetryChunkLoadPlugin = Object.assign(
@@ -15,13 +14,6 @@ const RetryChunkLoadPlugin = Object.assign(
 );
 
 const webpack = require('webpack');
-
-const cacheLoader = {
-  loader: 'cache-loader',
-  options: {
-    cacheDirectory: path.resolve(process.cwd(), 'node_modules/.cache-loader'),
-  },
-};
 
 // The common webpack configuration
 
@@ -47,14 +39,28 @@ module.exports = (opts) => {
     /\/dist/, // bundled files
   ];
 
-  return {
-    plugins: [
+  const plugins = [];
+  const toCopy = [
+    ...get(opts, 'assets.files', []),
+    ...get(opts, 'assets.options', []),
+  ];
+
+  if (toCopy.length) {
+    plugins.push(
       // copy application assets
       // note: we could use the html-loader plugin but it wouldn't work for dynamic src attributes!
-      new CopyWebpackPlugin(
-        get(opts, 'assets.files', []),
-        get(opts, 'assets.options', {}),
-      ),
+      new CopyWebpackPlugin({
+        patterns: toCopy,
+      }),
+    );
+  }
+
+  return {
+    output: {
+      publicPath: '',
+    },
+    plugins: [
+      ...plugins,
 
       // see : https://github.com/jantimon/html-webpack-plugin
       new HtmlWebpackPlugin({
@@ -70,6 +76,7 @@ module.exports = (opts) => {
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash].css',
         chunkFilename: '[id].css',
+        ignoreOrder: true,
       }),
 
       new webpack.DefinePlugin({
@@ -96,6 +103,7 @@ module.exports = (opts) => {
       modules: [
         './node_modules', // #1 check in module's relative node_module directory
         path.resolve('./node_modules'), // #2 check in application's node_module directory
+        path.resolve(__dirname, '../node_modules'), // #3 check in webpack config directory
       ],
     },
 
@@ -117,11 +125,7 @@ module.exports = (opts) => {
         // load images & fonts into file or convert to base64 if size < 10Kib
         {
           test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            esModule: false,
-          },
+          type: 'asset',
         },
 
         // load css files
@@ -129,7 +133,6 @@ module.exports = (opts) => {
           test: /\.css$/,
           use: [
             MiniCssExtractPlugin.loader,
-            cacheLoader,
             {
               loader: 'css-loader', // translates CSS into CommonJS
             },
@@ -147,7 +150,6 @@ module.exports = (opts) => {
           test: /\.less$/,
           use: [
             MiniCssExtractPlugin.loader,
-            cacheLoader,
             {
               loader: 'css-loader', // translates CSS into CommonJS
             },
@@ -169,7 +171,6 @@ module.exports = (opts) => {
           test: /\.scss$/,
           use: [
             MiniCssExtractPlugin.loader,
-            cacheLoader,
             'css-loader', // translates CSS into CommonJS
             {
               loader: 'sass-loader',
@@ -186,9 +187,12 @@ module.exports = (opts) => {
         {
           test: /Messages_\w+_\w+\.json$/,
           use: [
-            cacheLoader,
             {
               loader: path.resolve(__dirname, './loaders/translation-json.js'),
+              options: {
+                cacheCompression: false,
+                cacheDirectory: true,
+              },
             },
           ],
         },
@@ -198,10 +202,11 @@ module.exports = (opts) => {
           test: /\.js$/,
           exclude: jsExclude,
           use: [
-            cacheLoader,
             {
               loader: 'babel-loader', // babelify JS sources
               options: {
+                cacheCompression: false,
+                cacheDirectory: true,
                 presets: [
                   require.resolve('@babel/preset-env'), // babel preset configuration
                 ],
@@ -225,7 +230,6 @@ module.exports = (opts) => {
           exclude: jsExclude,
           enforce: 'pre',
           use: [
-            cacheLoader,
             {
               loader: path.resolve(
                 __dirname,
@@ -245,7 +249,6 @@ module.exports = (opts) => {
           exclude: jsExclude,
           enforce: 'pre',
           use: [
-            cacheLoader,
             {
               loader: path.resolve(
                 __dirname,
@@ -261,7 +264,7 @@ module.exports = (opts) => {
     }, // \module
 
     optimization: {
-      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+      minimizer: [new TerserJSPlugin({})],
       runtimeChunk: 'single',
       // bundle spliting configuration
       splitChunks: {
