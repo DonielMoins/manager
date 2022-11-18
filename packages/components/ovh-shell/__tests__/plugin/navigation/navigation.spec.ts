@@ -5,6 +5,28 @@ import navigationPlugin from '../../../src/plugin/navigation';
 import DirectClientMessageBus from '../../../src/message-bus/direct-client';
 import Shell from '../../../src/shell/shell';
 
+vi.mock('@ovh-ux/manager-config', () => {
+  interface Universe {
+    [key: string]: {
+      publicURL: string;
+    };
+  }
+
+  return {
+    Environment: class {
+      applications: Universe[];
+
+      constructor(args: any) {
+        this.applications = args.applications;
+      }
+
+      getApplications() {
+        return this.applications;
+      }
+    },
+  };
+});
+
 const feature = loadFeature(
   '../../../features/plugin/navigation/navigation.feature',
   {
@@ -29,6 +51,13 @@ defineFeature(feature, (test) => {
       });
     });
     let desiredURL;
+
+    vi.mock('@ovh-ux/url-builder', () => {
+      const modules = {
+        buildURL: vi.fn(() => '/manager/#/foo/this/is/awesome'),
+      };
+      return { ...modules };
+    });
 
     given('I have a navigation plugin instanciated', () => {
       navPlugin = navigationPlugin(
