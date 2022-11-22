@@ -3,27 +3,38 @@
     data-primary-label="{{ ::'pci_databases_add_command_close_button' | translate }}"
     data-primary-action="$ctrl.goBack()"
 >
-    <pci-order-command
-        data-order-api-url="$ctrl.data.orderAPIUrl"
-        data-order-data="$ctrl.data.orderData"
-        data-parameter-keys="$ctrl.data.orderKeys"
-        data-user="$ctrl.data.user"
-        data-auto-height="true"
-    >
-        <p data-translate="pci_database_add_command_description"></p>
-        <a
-            class="oui-link_icon"
-            data-ng-href="{{:: $ctrl.data.apiGuideUrl }}"
-            target="_blank"
-            rel="noopener"
-        >
-            <span
-                data-translate="pci_database_add_command_documentation_link"
-            ></span>
-            <span
-                class="oui-icon oui-icon-external-link"
-                aria-hidden="true"
-            ></span>
-        </a>
-    </pci-order-command>
+    <oui-tabs>
+        <oui-tabs-item heading="api">
+            <pci-order-command
+                data-order-api-url="$ctrl.orderAPIUrl"
+                data-order-data="$ctrl.apiData"
+                data-parameter-keys="$ctrl.orderKeys"
+                data-user="$ctrl.user"
+                data-auto-height="true"
+            >
+                <p data-translate="pci_database_add_command_description"></p>
+                <a
+                    class="oui-link_icon"
+                    data-ng-href="{{:: $ctrl.apiGuideUrl }}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <span
+                        data-translate="pci_database_add_command_documentation_link"
+                    ></span>
+                    <span
+                        class="oui-icon oui-icon-external-link"
+                        aria-hidden="true"
+                    ></span>
+                </a>
+            </pci-order-command>
+        </oui-tabs-item>
+        <oui-tabs-item heading="terraform">
+            <pci-order-command-terraform
+                data-api-data="$ctrl.apiData"
+                data-model="$ctrl.data"
+                data-project-id="$ctrl.projectId"
+            ></pci-order-command-terraform>
+        </oui-tabs-item>
+    </oui-tabs>
 </oui-modal>

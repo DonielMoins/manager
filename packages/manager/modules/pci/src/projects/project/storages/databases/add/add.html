@@ -70,7 +70,6 @@
                     data-model="$ctrl.model.plan.nodesCount"
                     data-min="$ctrl.model.plan.minNodes"
                     data-max="$ctrl.model.plan.maxNodes"
-                    data-on-change="$ctrl.onNodeNumberChange()"
                 >
                 </oui-numeric>
             </oui-field>
@@ -141,16 +140,16 @@
                     <span
                         data-translate="pci_database_add_network_mode_helper"
                         data-translate-values="{
-                        link: 
-                        '<a 
-                            class=&quot oui-link_icon &quot 
-                            href=&quot' + $ctrl.privateNetworkGuideUrl + '&quot 
-                            target=&quot _blank &quot 
+                        link:
+                        '<a
+                            class=&quot oui-link_icon &quot
+                            href=&quot' + $ctrl.privateNetworkGuideUrl + '&quot
+                            target=&quot _blank &quot
                         >
                             <span>{{:: 'pci_database_add_network_mode_helper_link' | translate}}</span>
-                            <span 
-                                class=&quot oui-icon oui-icon-external-link &quot 
-                                aria-hidden=&quot true &quot 
+                            <span
+                                class=&quot oui-icon oui-icon-external-link &quot
+                                aria-hidden=&quot true &quot
                             ></span>
                         </a>',
                     }"
@@ -213,7 +212,6 @@
                             data-ng-if="$ctrl.availableSubnets.length > 1"
                             data-match="name"
                             data-searchable
-                            data-on-change="$ctrl.getOrderData()"
                         >
                         </oui-select>
                         <p>
