@@ -3,9 +3,7 @@ import template from './pci-order-command-terraform.html';
 
 export default {
   bindings: {
-    apiData: '<',
-    model: '<',
-    projectId: '<',
+    terraformData: '<',
   },
   controller,
   template,

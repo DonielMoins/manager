@@ -1,34 +1,39 @@
 export default class PciOrderCommandTerraformCtrl {
   $onInit() {
-    this.checkApiData = () => {
-      if (this.apiData.subnetId && this.apiData.networkId) {
-        return `subnetId = "${this.apiData.subnetId}"
-        networkId = "${this.apiData.networkId}"`;
-      }
-      return '';
-    };
+    this.identationString = '  ';
+    this.terraformDisplay = this.formatTerraformNode(this.terraformData);
+  }
 
-    this.addNodes = (nodesCount) => {
-      const nodes = [];
-      for (let i = 0; i < nodesCount; i += 1) {
-        nodes.push(`nodes {
-          region = "${this.model.region.name}"
-          ${this.checkApiData()}
-      }`);
-      }
-      return nodes;
-    };
+  formatTerraformNode(node, ident = 0) {
+    let keyStr = '';
+    // handle key value
+    if (node.key === 'resource') {
+      keyStr = `${node.key} ${node.values
+        .map((value) => `"${value}"`)
+        .join(' ')}`;
+    } else if (node.values.length > 0) {
+      keyStr = `${node.key} = ${node.values
+        .map((value) => `"${value}"`)
+        .join(' ')}`;
+    } else {
+      keyStr = `${node.key}`;
+    }
+    // handle sub nodes
+    if (node.nodes.length > 0) {
+      return `${this.getIdentationString(ident)}${keyStr} { 
+${node.nodes
+  .map((subnode) => `${this.formatTerraformNode(subnode, ident + 1)}`)
+  .join(`\r\n`)}
+${this.getIdentationString(ident)}}`;
+    }
+    return `${this.getIdentationString(ident)}${keyStr}`;
+  }
 
-    this.terraformData = `resource "ovh_cloud_project_database" "${
-      this.model.engine.name
-    }" {
-      service_name = "${this.projectId}"
-      description = "${this.model.name}"
-      engine = "${this.model.engine.name}"
-      version = "${this.model.engine.selectedVersion.version}"
-      plan = "${this.model.plan.name}"
-      ${this.addNodes(this.model.plan.nodesCount).join('\n\t')}
-      flavor = "${this.model.flavor.name}"
-}`;
+  getIdentationString(ident) {
+    let identationStr = '';
+    for (let i = 0; i < ident; i += 1) {
+      identationStr += this.identationString;
+    }
+    return identationStr;
   }
 }

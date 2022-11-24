@@ -1,5 +1,9 @@
 import { API_GUIDES } from '../../../../project.constants';
-import { getOrderDataFromModel, ORDER_KEYS } from '../add.constants';
+import {
+  getOrderDataFromModel,
+  getTerraformDataFromModel,
+  ORDER_KEYS,
+} from '../add.constants';
 
 export default class CommandCtrl {
   /* @ngInject */
@@ -17,6 +21,7 @@ export default class CommandCtrl {
       API_GUIDES[this.user.ovhSubsidiary] || API_GUIDES.DEFAULT;
     this.orderAPIUrl = `POST /cloud/project/${this.projectId}/database/${this.data.engine.name}`;
     this.apiData = getOrderDataFromModel(this.data);
+    this.terraformData = getTerraformDataFromModel(this.projectId, this.data);
   }
 
   cancel() {
