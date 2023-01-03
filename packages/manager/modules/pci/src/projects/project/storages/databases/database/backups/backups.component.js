@@ -12,6 +12,7 @@ export default {
     trackDashboard: '<',
     backupRetentionTime: '<',
     isFeatureActivated: '<',
+    getCurrentFlavor: '<',
   },
   controller,
   template,

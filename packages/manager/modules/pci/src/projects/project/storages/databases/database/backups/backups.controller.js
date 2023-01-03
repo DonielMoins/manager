@@ -18,6 +18,7 @@ export default class PciProjectStorageDatabaseBackupsCtrl {
     this.loadMessages();
     this.trackDashboard('backups', 'page');
     this.backupTime = this.database.backupTime;
+    this.isEngineVersionDeprecated = this.getCurrentFlavor().isDeprecated;
   }
 
   loadMessages() {

@@ -1,4 +1,5 @@
 import find from 'lodash/find';
+import { RESTORE_MODES } from './fork/fork.constants';
 
 export default /* @ngInject */ ($stateProvider) => {
   $stateProvider.state(
@@ -23,6 +24,13 @@ export default /* @ngInject */ ($stateProvider) => {
               find(capabilities.plans, (p) => p.name === database.plan)
                 .backupRetention,
             ),
+          ),
+        getCurrentFlavor: /* @ngInject */ (database, engine) => () =>
+          engine.getFlavor(
+            database.version,
+            database.plan,
+            database.region,
+            database.flavor,
           ),
         goBackToBackups: /* @ngInject */ ($state, CucCloudMessage) => (
           message = false,
@@ -61,14 +69,19 @@ export default /* @ngInject */ ($stateProvider) => {
               backupInstance,
             },
           ),
-        goToFork: /* @ngInject */ ($state) => (backupInstance, database) =>
-          $state.go(
+        goToFork: /* @ngInject */ ($state) => (backupInstance) => {
+          const stateparams = {
+            restoreMode: RESTORE_MODES.BACKUP,
+          };
+          if (backupInstance) {
+            stateparams.backupId = backupInstance.id;
+          }
+
+          return $state.go(
             'pci.projects.project.storages.databases.dashboard.backups.fork',
-            {
-              backupInstance,
-              database,
-            },
-          ),
+            stateparams,
+          );
+        },
         refreshBackups: /* @ngInject */ ($state) => () => {
           return $state.reload();
         },
