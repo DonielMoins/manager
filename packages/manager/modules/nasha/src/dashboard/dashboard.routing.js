@@ -96,6 +96,13 @@ export default /* @ngInject */ ($stateProvider) => {
 
       isNashaLegacyService: /* @ngInject */ (nasha) => {
         const { datacenter, diskType } = nasha;
+        console.log('ZM:: datacenter', datacenter);
+        console.log(
+          'ZM:: isDatacenter',
+          ['rbx', 'sbg', 'bhs'].includes(datacenter),
+        );
+        console.log('ZM:: diskType', diskType);
+
         return ['rbx', 'sbg', 'bhs'].includes(datacenter) && diskType === 'hdd';
       },
 
@@ -103,6 +110,12 @@ export default /* @ngInject */ ($stateProvider) => {
         isNashaLegacyServicesPeriod,
         isNashaLegacyService,
       ) => {
+        console.log('ZM:: isPeriod', isNashaLegacyServicesPeriod);
+        console.log('ZM:: isService', isNashaLegacyService);
+        console.log(
+          'ZM:: is to display',
+          isNashaLegacyServicesPeriod && isNashaLegacyService,
+        );
         return isNashaLegacyServicesPeriod && isNashaLegacyService;
       },
     },
