@@ -130,13 +130,6 @@ angular
                 state: 'app.otrs.tickets',
                 namespace: 'account',
               });
-            } else {
-              SidebarMenu.addMenuItem({
-                name: 'support',
-                title: $translate.instant('menu_support'),
-                state: 'support',
-                namespace: 'account',
-              });
             }
           });
       }
