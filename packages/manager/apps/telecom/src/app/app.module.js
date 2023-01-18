@@ -288,7 +288,7 @@ export default async (containerEl, shellClient) => {
       },
     )
     .config(async () => {
-      await shellClient.tracking.setConfig(TRACKING);
+      await shellClient.tracking.setConfig(environment.getRegion(), TRACKING);
     })
     .config(
       /* @ngInject */ (atInternetConfigurationProvider) => {
