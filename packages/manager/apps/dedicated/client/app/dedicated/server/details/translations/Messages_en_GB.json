@@ -1121,7 +1121,7 @@
   "server_configuration_monitoring_update_modal_status_proactive": "Enabled with proactive intervention",
   "server_configuration_monitoring_update_modal_status_no-proactive": "Enabled without proactive intervention",
   "server_configuration_monitoring_update_modal_description_status_disabled": "Your server is not monitored, and you will not receive any alerts from OVHcloud in the event of an incident.",
-  "server_configuration_monitoring_update_modal_description_status_proactive": "Your server is monitored, and you will receive email alerts to the address linked to your technical contact’s ID. You authorise OVHcloud to intervene directly on your machine in the event of alerts. A support ticket is automatically created, so you can track the progress of your intervention.",
+  "server_configuration_monitoring_update_modal_description_status_proactive": "Your server is monitored, and you will receive email alerts to the address linked to your technical contact’s ID. You authorize OVHcloud to intervene directly on your machine in the event of alerts. A support ticket is automatically created, so you can follow up with your ticket.",
   "server_configuration_monitoring_update_modal_description_status_no-proactive": "Your server is monitored, and you will receive email alerts to the address linked to your technical contact’s ID. OVHcloud will not intervene on your machine without a direct request from you.",
   "server_configuration_monitoring_update_modal_update_proactive_request_success": "Interventions are enabled on the {{serverName}} server.",
   "server_configuration_monitoring_update_modal_update_no-proactive_request_success": "Interventions are disabled on the {{serverName}} server.",
