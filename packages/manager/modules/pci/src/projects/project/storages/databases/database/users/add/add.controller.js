@@ -14,6 +14,13 @@ export default class AddUserCtrl {
   $onInit() {
     this.trackDashboard('users::add_a_user', 'page');
     this.availableRoles = [...this.roles];
+    console.log(this.roles);
+    this.rolesList = AddUserCtrl.getRoles(this.roles);
+    console.log(this.rolesList);
+    this.isAdvancedRole = this.isFeatureActivated(
+      'isAdvancedRole',
+      this.database.engine,
+    );
     this.model = {
       username: '',
       password: '',
@@ -33,6 +40,19 @@ export default class AddUserCtrl {
 
   static checkPattern(value, pattern) {
     return pattern.test(value);
+  }
+
+  static getRoles(roles) {
+    const newRolesList = [];
+    roles.map((role) =>
+      // const nameRole = role.name.split('@');
+      newRolesList.push({
+        name: role.name.split('@')[0],
+        admin: role.name.includes('admin'),
+        db: role.name.split('@')[1],
+      }),
+    );
+    return newRolesList;
   }
 
   getUserFromModel() {

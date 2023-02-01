@@ -64,8 +64,71 @@
 
     <div ng-if="!$ctrl.isRolesReadOnly">
         <h2 data-translate="pci_databases_users_add_roles"></h2>
+        <!-- TODO: Solution proposé 👇 -->
+        <oui-inline-adder
+            on-add="$ctrl.onAdd(form)"
+            on-change="$ctrl.onChange(form)"
+            on-remove="$ctrl.onRemove(form)"
+            ng-if="$ctrl.isAdvancedRole"
+        >
+            <oui-inline-adder-row>
+                <oui-inline-adder-field adaptive>
+                    <oui-field
+                        class="mr-md-3"
+                        label="{{:: 'pci_databases_user_add_select_roles' | translate}}"
+                    >
+                        <label class="oui-select oui-select_l">
+                            <!-- TODO: Changer les values des props -->
+                            <!-- <oui-select
+                                name="userRoles"
+                                model="$ctrl.test"
+                                placeholder="{{:: 'pci_databases_user_add_select_roles' | translate }}"
+                                items="$ctrl.rolesList"
+                                required
+                            >
+                            </oui-select> -->
+                            <label class="oui-select">
+                                <select
+                                    id="role"
+                                    name="role"
+                                    class="oui-select__input"
+                                    data-ng-model="role"
+                                    required
+                                >
+                                    <option
+                                        ng-repeat="role in $ctrl.rolesList track by role.name"
+                                        value="{{role}}"
+                                    ></option>
+                                </select>
+                                <span
+                                    class="oui-icon oui-icon-chevron-down"
+                                    aria-hidden="true"
+                                ></span>
+                            </label>
+                        </label>
+                    </oui-field>
+                </oui-inline-adder-field>
+                <span class="mr-md-3 mt-md-3">@</span>
+                <oui-inline-adder-field>
+                    <oui-field
+                        label="{{:: 'pci_databases_user_add_input_database' | translate}}"
+                    >
+                        <input
+                            type="text"
+                            class="oui-input oui-input_l"
+                            name="database"
+                            data-disabled="role.admin"
+                            data-ng-model="database"
+                            placeholder="role.db"
+                            required
+                        />
+                    </oui-field>
+                </oui-inline-adder-field>
+            </oui-inline-adder-row>
+        </oui-inline-adder>
         <oui-dual-list
-            data-source="$ctrl.availableRoles"
+            ng-if="!$ctrl.isAdvancedRole"
+            data-source="$ctrl.rolesList"
             data-target="$ctrl.model.selectedRoles"
             disabled="$ctrl.isFeatureActivated('getRoles')"
             property="name"

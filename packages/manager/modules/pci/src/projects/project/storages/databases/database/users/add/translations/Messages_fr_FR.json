@@ -21,5 +21,7 @@
   "pci_databases_users_add_username_pattern_rule": "Doit être composé de caractères alphanumériques, points (.), underscores (_) ou tirets ( - ), ne doit pas commencer par un tiret ( - ) ou un point (.)",
   "pci_databases_users_add_group_max_rule": "Maximum {{max}} caractères",
   "pci_databases_users_add_group_pattern_rule": "Doit être composé de caractères alphanumériques. Seuls les lettres en majuscule/minuscule, les underscores (_) et nombres sont autorisés.",
-  "pci_databases_users_add_group_label": "Groupe"
+  "pci_databases_users_add_group_label": "Groupe",
+  "pci_databases_user_add_select_roles": "Selectionner un rôle",
+  "pci_databases_user_add_input_database": "Database"
 }
