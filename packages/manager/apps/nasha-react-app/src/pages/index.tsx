@@ -23,7 +23,7 @@ export default function NashaReactApp() {
 
   return (
     <div>
-      <h1>{t('title')}</h1>
+      <h1>{t('title')} - Test First Monolith</h1>
       <Suspense fallback="">
         <Await resolve={data.services}>
           {(services) => {
