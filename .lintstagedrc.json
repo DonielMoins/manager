@@ -3,6 +3,10 @@
     "htmlhint --ignore \"**/dist/**,**/dist-EU/**,**/dist-CA/**,**/dist-US/**\" \"packages/**/*.html\"",
     "prettier --write"
   ],
+ "*.{tsx,ts}":[
+  "eslint --fix \"packages/manager/apps/**/*.{tsx,ts}\"",
+  "prettier --write"
+],  
   "*.js": ["eslint --fix"],
   "*.{css,less,scss}": ["stylelint --fix"],
   "!(*CHANGELOG).md": ["remark -qf .", "eslint --ext .md --fix"],
