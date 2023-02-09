@@ -46,7 +46,7 @@ After it's finished, the app within the container will be available at <http://l
 The application can also be run from its own folder with the following command:
 
 ```sh
-$ yarn start:dev
+$ yarn start
 ```
 
 ### How to build the application?
@@ -62,7 +62,7 @@ $ yarn run build -p @ovh-ux/manager-container-app
 ### How to start the application?
 
 ```sh
-$ yarn workspace @ovh-ux/manager-hub-app run start:dev
+$ yarn workspace @ovh-ux/manager-hub-app run start
 ```
 
 Go to <http://localhost:9000>
@@ -80,7 +80,7 @@ $ yarn run build -p @ovh-ux/manager-hub-app
 ### How to start the application?
 
 ```sh
-$ yarn workspace @ovh-ux/manager-web run start:dev
+$ yarn workspace @ovh-ux/manager-web run start
 ```
 
 Go to <http://localhost:9000>
@@ -106,7 +106,7 @@ They can be started in different region with a given environment variable.
 
 ```sh
 $ export REGION=EU
-$ yarn workspace @ovh-ux/manager-dedicated run start:dev
+$ yarn workspace @ovh-ux/manager-dedicated run start
 ```
 
 Go to <http://localhost:9000>
@@ -129,7 +129,7 @@ Application can be started in different region with a given environment variable
 
 ```sh
 $ export REGION=EU
-$ yarn workspace @ovh-ux/manager-public-cloud run start:dev
+$ yarn workspace @ovh-ux/manager-public-cloud run start
 ```
 
 Go to <http://localhost:9000>
@@ -147,7 +147,7 @@ $ yarn run build -p @ovh-ux/manager-public-cloud
 ### How to start the application?
 
 ```sh
-$ yarn workspace @ovh-ux/manager-telecom run start:dev
+$ yarn workspace @ovh-ux/manager-telecom run start
 ```
 
 Go to <http://localhost:9000>
